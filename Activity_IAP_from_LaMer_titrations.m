@@ -9,21 +9,21 @@
 % Probing salty waters: re-assessment of the early stages of calcium 
 % carbonate formation in seawater. Geochimica et Cosmochimica Acta.
 % https://doi.org/10.1016/j.gca.2026.03.048
-%
+% 
 % Please forward suggestions and comments on this script to David Evans
 % (d.evans@soton.ac.uk)
-%
+% 
 % To function, the following are required:
 %   - data from a calibrated pH electrode and Ca ISE voltage
 %   - a Ca-ISE calibration in a separate data file, in which CaCl2 was
 %   added into a solution of known initial composition in several steps
 %   - a metadata file containing information regarding the solution
 %   compositions, titration timing and rate
-%
+% 
 % The script is designed to work with Metrohm csv files written by Tiamo
 % 2.5 or later. An example Tiamo method file that should produce output
 % compatible with this software is provided in the repository.
-%
+% 
 % Data processing is performed three times, detailed in Arns et al. (2026):
 % 1. Assuming no precipitation or ion association takes place, beyond that
 %   which can be explained by the pitzer_SW25.dat parameters.
@@ -35,13 +35,13 @@
 % 3. Assuming that NaOH counter titration (in the event that pH was
 %   maintained at a constant value) is related to DIC via the reaction 
 %   Ca2+ + HCO3- = CaCO3 + H+
-%
+% 
 % The first part of the script calculates the relationship between Ca ISE
 % voltage and {Ca2+} using the calibration data file. The second part
 % applies this and the pH data to fully solve the relevant details of
 % solution chemistry during the titration experiment. Multiple data files
 % can be processed in turn by adding further rows to the metadata csv file.
-%
+% 
 % Known dependancies:
 % - parallel computing (or replace parfor with for below), statistics,
 % curve fitting toolboxes
@@ -89,10 +89,6 @@ dirF = 'C:\Users\evans\Data\Earth_Science\co-author\Anthea\titratio_processing_r
 FileName = [metaData.calibration_file{i} '.csv'];
       
 tempFN = [dirF '\' FileName];
-%%% TEMP
-% copy to new folder
-saveDirCal = 'C:\Users\evans\Data\Earth_Science\co-author\Anthea\titratio_processing_revised_script\Arns_et_al_2026_Matlab_titration_data_processing\calibration_data';
-copyfile(tempFN,saveDirCal)
 tempCalData = readtable(tempFN,'VariableNamingRule','preserve');
 
 % Find location of second data block
@@ -361,14 +357,10 @@ close(figure(1))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Read in titration data
-dirF2 = 'C:\Users\evans\Data\Earth_Science\co-author\Anthea\titratio_processing_revised_script\titration-files';
+dirF2 = 'C:\Users\~\titration-files';
 FileName2 = [metaData.experiment{i} '.csv'];
       
 tempFN = [dirF2 '\' FileName2];
-%%% TEMP
-% copy to new folder
-saveDirCal = 'C:\Users\evans\Data\Earth_Science\co-author\Anthea\titratio_processing_revised_script\Arns_et_al_2026_Matlab_titration_data_processing\titration_data';
-copyfile(tempFN,saveDirCal)
 tempTitData = readtable(tempFN,'VariableNamingRule','preserve');
 
 fid = fopen(tempFN);
